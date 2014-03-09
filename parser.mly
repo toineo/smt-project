@@ -1,4 +1,4 @@
-{
+%{
   open Operators
   open ASTUtils
 
@@ -9,13 +9,14 @@
 
    Also, we do accept comments about anywhere in the file; is it a problem?
 *)
-}
+%}
 
 %token TComment
 %token TP TCNF
 %token <int> TInt
 %token TEqual TDifferent
 %token TNewLine
+%token TEOF
 
 
 %start <AST.ast> main
@@ -24,7 +25,7 @@
 %%
 
 main:
-| s = spec   cls = clauses
+| s = spec   cls = clauses TEOF
     { s, cls }
 
 spec:
@@ -33,7 +34,7 @@ spec:
 
 
 clauses:
-| l = separated_list(clause, TNewLine)
+| l = separated_list(TNewLine, clause)
     { l }
 
 

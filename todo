@@ -8,3 +8,9 @@ ____Code____
 
 ____Tests____
 - Make a simple file generator, that converts logical formulas with equality in the target langage
+
+
+
+
+____Misc____
+- Clean make target (remove _build and every "*~" file

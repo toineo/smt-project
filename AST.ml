@@ -3,7 +3,7 @@ type ast =
 
 (* Number of variables / Number of clauses *)
 (* TODO: is it really useful after parsing? *)
-type spec = int * int
+and spec = int * int
 
 and clause = eq_litteral list
 

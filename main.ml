@@ -1,0 +1,15 @@
+(* Entry point of the solver *)
+open Operators
+
+
+let filename = Sys.argv.(1)
+
+
+let main () =
+  let input_file = open_in filename 
+  in
+  let lexbuf = Lexing.from_input input 
+  in
+
+  Solver.solve $ Parser.main Lexer.token lexbuf
+    (* TODO: catch exceptions *)

@@ -1,0 +1,10 @@
+____Code____
+- Union-find
+
+- Options:
+  - input from stdin instead of a file
+
+
+
+____Tests____
+- Make a simple file generator, that converts logical formulas with equality in the target langage

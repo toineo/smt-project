@@ -5,9 +5,9 @@ type ast =
 (* TODO: is it really useful after parsing? *)
 and spec = int * int
 
-and clause = eq_litteral list
+and clause = eq_literal list
 
-and eq_litteral = 
+and eq_literal = 
 | Equality of couple_var
 | Difference of couple_var
 

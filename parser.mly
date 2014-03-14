@@ -39,7 +39,7 @@ clauses:
 
 
 clause:
-| l = list(eq_litteral)
+| l = list(eq_literal)
     { l }
 
 

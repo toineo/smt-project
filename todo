@@ -1,15 +1,31 @@
 ____Code____
 - Union-find
+  - is the "difference" extension trivial?
+  - implement a first version without backtracking
+    - check the article about backtracking union-find
+  - are representative fixed?
+  - difference: simple hashtable
 
 - Options:
   - input from stdin instead of a file
 
 
+- First version:
+  - do not rename literals right now (identify them by their full definition)
+
+  - Main loop:
+    - we maintain a list of defined clauses
+    - check satisfiability
+    - if a clause is undefined, define it (try to define its literals in order)
+
 
 ____Tests____
-- Make a simple file generator, that converts logical formulas with equality in the target langage
+- Make a simple file generator, that converts logical formulas with equality in the target language
 
 
+
+____Specs____
+- "p cnf" line: is it always like that?
 
 
 ____Misc____

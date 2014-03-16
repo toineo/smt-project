@@ -43,7 +43,7 @@ clause:
     { l }
 
 
-eq_litteral:
+eq_literal:
 | v1 = TInt  op = eq_operator  v2 = TInt
     { op $ couple_var v1 v2 }
 

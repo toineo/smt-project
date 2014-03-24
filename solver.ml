@@ -4,6 +4,14 @@ exception Unsat
 
 module ISet = Set.Make (struct type t = int let compare = compare end)
 
+module Config = struct
+  (* Try to search for already-satisfied equality literals in current clause, before
+     making any choice. As it is done in constant time for equality (versus a linear (w.r.t.
+     the number of variables) time for differnce), we separate the 2 cases *)
+  let propagate_early_equality = true
+end
+
+
 let rec solve ast =
   let nvars, processed_clauses = process ast
   in
@@ -20,6 +28,16 @@ let rec solve ast =
     | [] ->  (* No remaning clause, we have a model *)
       Some eq
     | cur_clause :: rem_clauses ->
+
+      (* Already-satisfied equality litteral spotting function *)
+      let rec has_satisfied_eq_lit = function
+        | [] -> false
+        | Equality (x, y) :: _
+            when Puf.find eq x = Puf.find eq y
+            -> true
+        | _ :: tail -> has_satisfied_eq_lit tail
+      in
+
       (* The following function will be used to iterate over the literals of the current clause,
          trying to make the current literal true and continuing resolution *)
       let rec add_literal = function
@@ -35,6 +53,8 @@ let rec solve ast =
               else
                 (* As the union-find cannot preserve (representative) order (w.r.t. element order),
                    we do not take order into account *)
+
+                (* FIXME: do we want to check if this is already enforced? (linear time...) *)
                 one_step_solve
                   eq
                   (Parray.set diff rx (ISet.add ry (Parray.get diff rx)))
@@ -87,7 +107,12 @@ let rec solve ast =
             Unsat -> add_literal tail
       in
 
-      add_literal cur_clause
+      if Config.propagate_early_equality
+        && has_satisfied_eq_lit cur_clause
+      then
+        one_step_solve eq diff rem_clauses
+      else
+        add_literal cur_clause
   in
 
   (* FIXME: variable name normalization (remove the +1 in the following line) *)

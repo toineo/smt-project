@@ -90,8 +90,8 @@ let _ =
     match
       Solver.solve $ Parser.main Lexer.token lexbuf
     with
-    | None -> Printf.printf "Unsat\n"
-    | Some (eq, nvars) ->
+    | None, _ -> Printf.printf "Unsat\n"
+    | Some eq, nvars ->
       (* print_tree eq nvars *)
       print_part eq (nvars + 1)
 

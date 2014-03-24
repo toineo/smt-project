@@ -18,7 +18,7 @@ let rec solve ast =
   *)
   let rec one_step_solve eq diff = function
     | [] ->  (* No remaning clause, we have a model *)
-      Some (eq, nvars)                  (* FIXME: putting nvars here is ugly *)
+      Some eq
     | cur_clause :: rem_clauses ->
       (* The following function will be used to iterate over the literals of the current clause,
          trying to make the current literal true and continuing resolution *)
@@ -91,10 +91,14 @@ let rec solve ast =
   in
 
   (* FIXME: variable name normalization (remove the +1 in the following line) *)
-  try
-    one_step_solve (Puf.create (nvars + 1)) (Parray.create (nvars + 1) ISet.empty) processed_clauses
-  with
-  | Unsat -> None
+  (
+    try
+      one_step_solve (Puf.create (nvars + 1)) (Parray.create (nvars + 1) ISet.empty) processed_clauses
+    with
+    | Unsat -> None
+  )
+    ,
+  nvars
 
 
 (* Transform the ast into a form usable during solving phases *)

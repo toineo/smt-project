@@ -96,9 +96,9 @@ let _ =
     with
     | None, _ -> Printf.printf "Unsat\n"
     | Some eq, nvars ->
-      print_equalities eq nvars (ASTUtils.remap_inverse_var inv)
+      (* print_equalities eq nvars (ASTUtils.remap_inverse_var inv) *)
       (* print_tree eq nvars (ASTUtils.remap_inverse_var inv) *)
-      (* print_part eq nvars (ASTUtils.remap_inverse_var inv) *)
+      print_part eq nvars (ASTUtils.remap_inverse_var inv)
 
   with
   | e ->

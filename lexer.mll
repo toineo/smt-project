@@ -6,7 +6,7 @@
 rule token = parse
 | [' ' '\t']
     { token lexbuf }
-| '\n'+
+| '\n' [' ' '\t' '\n']*
     { TNewLine }
 | eof
     { TEOF }

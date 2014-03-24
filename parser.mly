@@ -10,11 +10,9 @@
    Also, we do accept comments about anywhere in the file; is it a problem?
 
    FIXME: there is a shift/reduce
-   FIXME: empty lines problem
 *)
 %}
 
-%token TComment
 %token TP TCNF
 %token <int> TInt
 %token TEqual TDifferent

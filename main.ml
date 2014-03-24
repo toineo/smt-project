@@ -40,18 +40,18 @@ let _ =
 
   let filename = Sys.argv.(1)
   in
+  try
+    let input_file = open_in filename
+    in
+    let lexbuf = Lexing.from_channel input_file
+    in
+    match
+      Solver.solve $ Parser.main Lexer.token lexbuf
+    with
+    | None -> Printf.printf "Unsat\n"
+    | Some (eq, nvars) ->
+      print_uf eq nvars
 
-
-  let input_file = open_in filename
-  in
-  let lexbuf = Lexing.from_channel input_file
-  in
-
-  match
-    Solver.solve $ Parser.main Lexer.token lexbuf
   with
-  | None -> Printf.printf "Unsat\n"
-  | Some (eq, nvars) ->
-    print_uf eq nvars
-
-(* TODO: catch exceptions (file opening, etc) *)
+  | e ->
+    Printf.eprintf "Unexpected exception : %s\n" (Printexc.to_string e) 

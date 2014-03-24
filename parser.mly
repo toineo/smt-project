@@ -2,12 +2,15 @@
   open Operators
   open ASTUtils
 
-(* TODO: 
+(* TODO:
    For now, we accept whitespaces in source file; is it ok?
    For instance, the following clause is accepted:
    1 = 2 3<>  4
 
    Also, we do accept comments about anywhere in the file; is it a problem?
+
+   FIXME: there is a shift/reduce
+   FIXME: empty lines problem
 *)
 %}
 
@@ -25,21 +28,21 @@
 %%
 
 main:
-| s = spec   cls = clauses TEOF
+| s = spec   cls = clauses   TEOF
     { s, cls }
 
 spec:
-| TP TCNF  nbvars = TInt  nbclauses = TInt
+| TP TCNF   nbvars = TInt   nbclauses = TInt   TNewLine
     { nbvars, nbclauses }
 
 
 clauses:
-| l = separated_list(TNewLine, clause)
+| l = nonempty_list(clause)
     { l }
 
 
 clause:
-| l = list(eq_literal)
+| l = nonempty_list(eq_literal)   TNewLine
     { l }
 
 

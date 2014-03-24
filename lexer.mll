@@ -4,18 +4,18 @@
 
 
 rule token = parse
-| [' ' '\t'] 
+| [' ' '\t']
     { token lexbuf }
-| '\n'
+| '\n'+
     { TNewLine }
 | eof
     { TEOF }
 
 
 (* We don't need a real management of words *)
-| 'p' 
+| 'p'
     { TP }
-| "cnf" 
+| "cnf"
     { TCNF }
 | 'c'
     { comment_line lexbuf }
@@ -39,7 +39,7 @@ rule token = parse
 and comment_line = parse
 | '\n'
     { token lexbuf }
-| _ 
+| _
     { comment_line lexbuf }
 
 

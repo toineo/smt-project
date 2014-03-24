@@ -2,5 +2,5 @@ all: build
 
 
 build:
-	ocamlbuild -use-menhir -yaccflag --explain main.native
+	ocamlbuild -use-menhir -yaccflag --explain -cflags -annot main.native
 

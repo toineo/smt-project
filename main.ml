@@ -2,34 +2,28 @@
 open Operators
 (* open Puf *)
 
-
-
-(* tests Union Find*)
-
-(* let t = create 10 *)
-(* let () = Printf.printf "%b\n" (find t 0 <> find t 1) *)
-(* let t = union t 0 1 *)
-(* let () = Printf.printf "%b\n" (find t 0 = find t 1) *)
-(* let () = Printf.printf "%b\n" (find t 0 <> find t 2) *)
-(* let t = union t 2 3 *)
-(* let t = union t 0 3 *)
-(* let () = Printf.printf "%b\n" (find t 1 = find t 2) *)
-(* let t = union t 4 4 *)
-(* let () = Printf.printf "%b\n" (find t 4 <> find t 3) *)
-(* let () = Printf.printf "%b\n" (find t 4 = find t 3) *)
-
-
-
-
 (* TODO: better display *)
 let print_uf eq nvars =
   for i = 0 to nvars do
     Printf.printf "%d = %d\n" i (Puf.find eq i)
   done
 
-
-
-
+let print_tree eq nvars =
+  for i = 0 to nvars do 
+    let k = ref 0 in
+    for j = 0 to nvars do 
+      if (((Puf.find eq j) == i) && (i != j)) 
+      then
+	begin
+	  k := !k+1;
+	  if (!k == 1)
+	  then
+	    Printf.printf "%d\n" i;
+	  Printf.printf "|= %d\n" j
+	end
+    done;
+    if (!k == 1) then Printf.printf "\n"
+  done
 
 let _ =
   if Array.length Sys.argv < 2 then
@@ -50,7 +44,7 @@ let _ =
     with
     | None -> Printf.printf "Unsat\n"
     | Some (eq, nvars) ->
-      print_uf eq nvars
+      print_tree eq nvars
 
   with
   | e ->

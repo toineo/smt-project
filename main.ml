@@ -3,13 +3,13 @@ open Operators
 
 
 (* TODO: better display *)
-let print_uf eq nvars =
-  for i = 0 to nvars do
-    Printf.printf "%d = %d\n" i (Puf.find eq i)
+let print_equalities eq nvars tr =
+  for i = 0 to nvars - 1 do
+    Printf.printf "%d = %d\n" (tr i) (tr $ Puf.find eq i)
   done
 
-let print_tree eq nvars =
-  for i = 0 to nvars do
+let print_tree eq nvars tr =
+  for i = 0 to nvars - 1do
     let k = ref 0 in
     for j = 0 to nvars do
       if (((Puf.find eq j) == i) && (i != j))
@@ -18,15 +18,15 @@ let print_tree eq nvars =
 	      k := !k+1;
 	      if (!k == 1)
 	      then
-	        Printf.printf "%d\n" i;
-	      Printf.printf "|= %d\n" j
+	        Printf.printf "%d\n" $ tr i;
+	      Printf.printf "|= %d\n" $ tr j
 	    end
     done;
     if (!k == 1) then Printf.printf "\n"
   done
 
 (* This function is not optimized, but for a printing function, that is not such a problem *)
-let print_part eq nvars =
+let print_part eq nvars tr =
   let vars_done = Array.make nvars false
   in
 
@@ -53,11 +53,11 @@ let print_part eq nvars =
         let rec print = function
           | h1 :: ((h2 :: _ ) as t) ->
             vars_done.(h1) <- true;
-            Printf.printf "%d, " h1;
+            Printf.printf "%d, " $ tr h1;
             print t
           | [h] ->
             vars_done.(h) <-  true;
-            Printf.printf "%d}" h
+            Printf.printf "%d}" $ tr h
           | _ -> assert false
         in
 
@@ -87,13 +87,18 @@ let _ =
     in
     let lexbuf = Lexing.from_channel input_file
     in
+    let ast = Parser.main Lexer.token lexbuf
+    in
+    let norm_ast, inv = ASTUtils.remap ast
+    in
     match
-      Solver.solve $ Parser.main Lexer.token lexbuf
+      Solver.solve norm_ast
     with
     | None, _ -> Printf.printf "Unsat\n"
     | Some eq, nvars ->
-      (* print_tree eq nvars *)
-      print_part eq (nvars + 1)
+      print_equalities eq nvars (ASTUtils.remap_inverse_var inv)
+      (* print_tree eq nvars (ASTUtils.remap_inverse_var inv) *)
+      (* print_part eq nvars (ASTUtils.remap_inverse_var inv) *)
 
   with
   | e ->

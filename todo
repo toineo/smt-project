@@ -19,6 +19,9 @@ ____Code____
     - if a clause is undefined, define it (try to define its literals in order)
 
 
+- Parsing:
+   - normalize variables names to have them between 0, nvars - 1
+
 ____Tests____
 - Make a simple file generator, that converts logical formulas with equality in the target language
 

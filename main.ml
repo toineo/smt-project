@@ -24,7 +24,7 @@ let () = Printf.printf "%b\n" (find t 4 = find t 3)
 
 
 
-let () =
+let _ =
   if Array.length Sys.argv < 2 then
     begin
       Printf.printf "Error: no input file given\n";
